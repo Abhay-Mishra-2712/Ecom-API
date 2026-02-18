@@ -1,0 +1,52 @@
+Product Controller
+Get Products
+Add a Product
+Get one Product
+Rate Product.
+Add items to cart 
+Get items of cart 
+Remove items from cart 
+
+
+
+
+Usercontroller
+SignUp- Email,Name,Password TypeofUser(customer, seller)
+SignIn -(Email,Password)
+
+db.products.aggregate([
+    // 1. create documents for rating 
+    {
+        $unwind:"$ratings"
+    },
+    //2. Group rating per product and get average 
+    {
+        $group:{
+            _id:"$name",
+            averagerating: {$avg:"$ratings.rating"}
+
+        }
+    }
+])
+
+
+db.products.aggregate([
+    //1. Project name of  product  and countofRating
+    {
+        $project:{name:1, countofRating:{
+            $cond:{if:{$isArray:"$ratings"}
+            ,then:{$size:"$ratings"},else:0}
+        }}
+    },
+
+    {
+        //2. Sort the collection 
+
+        $sort:{countofRating:-1}
+    },
+    {
+        // Limit to just one item in the result 
+
+        $limit:1
+    }
+])

@@ -1,0 +1,91 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "E-Commerce API",
+        "description": "APIs for e-commerce application"
+    },
+    
+
+  "servers":[
+        {
+            "url":"http://localhost:3200",
+            "description":"Local server"
+        }
+    ],
+
+    "components": {
+        "securitySchemes":{
+        "JWT":{
+            "type":"apiKey",
+            "in":"header",
+            "name":"Authorization"
+        }
+    }
+},
+
+      
+    "paths": {
+        "/api/products":{
+            "get":{
+                "tags":["Products"],
+                "summary":"Get Products",
+                "description":"User will get all products",
+                "security":[
+                    {
+                       "JWT":{}
+                    }
+                ],
+                
+                "responses":{
+                    "200":{
+                        "description":"Ok"
+                    },
+                    "401":{
+                        "description":"Unauthorized"
+                    }
+
+                }
+
+            }
+        },
+        "/api/users/signin":{
+            "post":{
+                 "tags":["Users"],
+                "summary":"User Signin",
+                "description":"User login to get token",
+                "requestBody":{
+                    "content":
+                    {
+                        "application/json":{
+                          
+                        "schema":{
+                            "type":"object",
+                            "properties":{
+                                "email":{
+                                    "type":"string"
+                                },
+                                "password":{
+                                    "type":"string"
+                                }
+                            }
+                        }
+                        }
+                       
+                    }
+                },
+                "responses":{
+                    "200":{
+                        "description":"Ok"
+                    },
+                    "400":{
+                        "description":"Incorrect Credentials"
+                    }
+
+                }
+
+            }
+        }
+    }
+
+}
